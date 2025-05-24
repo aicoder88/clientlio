@@ -26,26 +26,22 @@ export default async function Dashboard() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    return redirect("/sign-in");
-  }
-
   // Mock data - in a real app, this would come from API calls
   const mockData = {
     emailSends: {
-      total: 2547,
-      change: 12.5,
+      total: user ? 2547 : 1234,
+      change: user ? 12.5 : 8.3,
       positive: true,
     },
     newLeads: {
-      total: 384,
-      change: 8.2,
+      total: user ? 384 : 156,
+      change: user ? 8.2 : 5.7,
       positive: true,
     },
     conversionRate: {
-      total: 15.3,
-      change: -2.4,
-      positive: false,
+      total: user ? 15.3 : 12.8,
+      change: user ? -2.4 : 3.2,
+      positive: user ? false : true,
     },
     topLeadSources: [
       { name: "Organic Search", percentage: 42 },
@@ -62,11 +58,46 @@ export default async function Dashboard() {
         <div className="container mx-auto px-4 py-8 flex flex-col gap-8">
           {/* Header Section */}
           <header className="flex flex-col gap-4">
-            <h1 className="text-3xl font-bold">Welcome to your Dashboard</h1>
+            <h1 className="text-3xl font-bold">
+              {user ? "Welcome to your Dashboard" : "Dashboard Preview"}
+            </h1>
             <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg text-sm p-3 px-4 rounded-lg border border-white/20 dark:border-gray-700/30 shadow-sm flex gap-2 items-center">
               <InfoIcon size="14" />
-              <span>Here's an overview of your AI services performance</span>
+              <span>
+                {user
+                  ? "Here's an overview of your AI services performance"
+                  : "This is a demo of what your dashboard could look like. Sign up to get started!"
+                }
+              </span>
             </div>
+            {!user && (
+              <div className="bg-blue-600/20 dark:bg-blue-800/20 backdrop-blur-lg text-sm p-4 rounded-lg border border-blue-500/30 shadow-sm">
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                  <div>
+                    <p className="font-medium text-blue-900 dark:text-blue-100">
+                      Ready to get started with AI-powered business tools?
+                    </p>
+                    <p className="text-blue-700 dark:text-blue-200">
+                      Sign up now to access your personalized dashboard and start growing your business.
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <a
+                      href="/sign-up"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      Sign Up
+                    </a>
+                    <a
+                      href="/sign-in"
+                      className="px-4 py-2 bg-white/20 text-blue-900 dark:text-blue-100 rounded-lg hover:bg-white/30 transition-colors"
+                    >
+                      Sign In
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </header>
 
           {/* Stats Overview */}
@@ -210,17 +241,45 @@ export default async function Dashboard() {
                 <div className="flex items-center gap-4">
                   <UserCircle size={48} className="text-primary" />
                   <div>
-                    <CardTitle>User Profile</CardTitle>
-                    <CardDescription>{user.email}</CardDescription>
+                    <CardTitle>{user ? "User Profile" : "Demo Profile"}</CardTitle>
+                    <CardDescription>
+                      {user ? user.email : "demo@clientlio.com"}
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 overflow-hidden">
-                  <pre className="text-xs font-mono max-h-48 overflow-auto">
-                    {JSON.stringify(user, null, 2)}
-                  </pre>
-                </div>
+                {user ? (
+                  <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 overflow-hidden">
+                    <pre className="text-xs font-mono max-h-48 overflow-auto">
+                      {JSON.stringify(user, null, 2)}
+                    </pre>
+                  </div>
+                ) : (
+                  <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                      This is a preview of your user profile section. When you sign up, you'll see:
+                    </p>
+                    <ul className="text-sm space-y-2">
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        Account information and settings
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        Subscription details and billing
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        API keys and integrations
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        Usage statistics and limits
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -228,26 +287,55 @@ export default async function Dashboard() {
           {/* Data Upload Section */}
           <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg">
             <CardHeader>
-              <CardTitle>Update Dashboard Data</CardTitle>
+              <CardTitle>
+                {user ? "Update Dashboard Data" : "Data Management Features"}
+              </CardTitle>
               <CardDescription>
-                Upload new data or connect to external APIs
+                {user
+                  ? "Upload new data or connect to external APIs"
+                  : "See what data management features are available"
+                }
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col md:flex-row gap-4">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                  <BarChart3 className="h-4 w-4" />
-                  <span>Connect API</span>
-                </button>
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  <span>Upload Email Data</span>
-                </button>
-                <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                  <Users className="h-4 w-4" />
-                  <span>Import Leads</span>
-                </button>
+                {user ? (
+                  <>
+                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
+                      <BarChart3 className="h-4 w-4" />
+                      <span>Connect API</span>
+                    </button>
+                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      <span>Upload Email Data</span>
+                    </button>
+                    <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
+                      <Users className="h-4 w-4" />
+                      <span>Import Leads</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
+                      <BarChart3 className="h-4 w-4" />
+                      <span>Connect API</span>
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
+                      <Mail className="h-4 w-4" />
+                      <span>Upload Email Data</span>
+                    </div>
+                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
+                      <Users className="h-4 w-4" />
+                      <span>Import Leads</span>
+                    </div>
+                  </>
+                )}
               </div>
+              {!user && (
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
+                  Sign up to unlock these powerful data management features and start integrating your business data.
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>

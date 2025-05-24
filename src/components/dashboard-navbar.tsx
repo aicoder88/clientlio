@@ -47,7 +47,7 @@ export default function DashboardNavbar() {
               </span>
             </Link>
             <Link
-              href="#"
+              href="/crm"
               className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
             >
               <span className="flex items-center gap-1">
@@ -56,7 +56,7 @@ export default function DashboardNavbar() {
               </span>
             </Link>
             <Link
-              href="#"
+              href="/chatbot"
               className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
             >
               <span className="flex items-center gap-1">
@@ -65,7 +65,7 @@ export default function DashboardNavbar() {
               </span>
             </Link>
             <Link
-              href="#"
+              href="/automation"
               className="text-gray-700 dark:text-gray-200 hover:text-blue-600 dark:hover:text-blue-400 font-medium"
             >
               <span className="flex items-center gap-1">

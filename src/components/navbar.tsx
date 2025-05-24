@@ -17,6 +17,41 @@ export default async function Navbar() {
         <Link href="/" prefetch className="text-xl font-bold text-blue-600">
           Clientlio
         </Link>
+        
+        {/* Navigation Links */}
+        <div className="hidden md:flex items-center space-x-8">
+          <Link
+            href="/features"
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            Features
+          </Link>
+          <Link
+            href="/pricing"
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            Pricing
+          </Link>
+          <Link
+            href="/blog"
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            Blog
+          </Link>
+          <Link
+            href="/about"
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            About
+          </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            Contact
+          </Link>
+        </div>
+
         <div className="flex gap-4 items-center">
           {user ? (
             <>

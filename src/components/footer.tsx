@@ -25,7 +25,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/lead-generation"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
                 >
                   <BarChart3 className="h-4 w-4" />
@@ -34,7 +34,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/analytics"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
                 >
                   <BarChart3 className="h-4 w-4" />
@@ -43,7 +43,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/chatbot"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
                 >
                   <MessageSquare className="h-4 w-4" />
@@ -52,11 +52,20 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/automation"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
                 >
                   <Zap className="h-4 w-4" />
                   Automation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/crm"
+                  className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-2"
+                >
+                  <Users className="h-4 w-4" />
+                  CRM
                 </Link>
               </li>
             </ul>
@@ -86,7 +95,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/features"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Features
@@ -94,7 +103,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/pricing"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Pricing
@@ -102,7 +111,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/blog"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Blog
@@ -119,7 +128,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/about"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   About
@@ -127,7 +136,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/careers"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Careers
@@ -135,7 +144,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/press"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Press
@@ -143,7 +152,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/contact"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Contact
@@ -160,7 +169,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#"
+                  href="/privacy"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Privacy
@@ -168,7 +177,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/terms"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Terms
@@ -176,7 +185,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/security"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Security
@@ -184,7 +193,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#"
+                  href="/cookies"
                   className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   Cookies
@@ -201,22 +210,28 @@ export default function Footer() {
 
           <div className="flex space-x-6">
             <a
-              href="#"
+              href="https://twitter.com/clientlio"
               className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span className="sr-only">Twitter</span>
               <Twitter className="h-6 w-6" />
             </a>
             <a
-              href="#"
+              href="https://linkedin.com/company/clientlio"
               className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span className="sr-only">LinkedIn</span>
               <Linkedin className="h-6 w-6" />
             </a>
             <a
-              href="#"
+              href="https://github.com/clientlio"
               className="text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span className="sr-only">GitHub</span>
               <Github className="h-6 w-6" />

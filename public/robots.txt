@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://clientlio.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /dashboard/reset-password/
+
+# Allow important pages
+Allow: /
+Allow: /features
+Allow: /pricing
+Allow: /blog
+Allow: /about
+Allow: /contact
+Allow: /dashboard
+Allow: /lead-generation
+Allow: /analytics
+Allow: /chatbot
+Allow: /automation
+Allow: /crm
+
+# Crawl delay (optional)
+Crawl-delay: 1
