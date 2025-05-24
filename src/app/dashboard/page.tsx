@@ -1,3 +1,5 @@
+"use client";
+
 import DashboardNavbar from "@/components/dashboard-navbar";
 import {
   Card,
@@ -15,153 +17,179 @@ import {
   TrendingUp,
   ArrowUpRight,
   ArrowDownRight,
+  Target,
+  Zap,
+  Globe,
+  Activity,
+  DollarSign,
+  Calendar,
+  Clock,
+  Sparkles,
 } from "lucide-react";
-import { redirect } from "next/navigation";
-import { createClient } from "../../../supabase/server";
+import { useEffect, useState } from "react";
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  RadialBarChart,
+  RadialBar,
+  ComposedChart,
+} from "recharts";
 
-export default async function Dashboard() {
-  const supabase = await createClient();
+// Mock data for visualizations
+const revenueData = [
+  { month: "Jan", revenue: 45000, leads: 120, conversion: 12.5 },
+  { month: "Feb", revenue: 52000, leads: 145, conversion: 14.2 },
+  { month: "Mar", revenue: 48000, leads: 132, conversion: 13.1 },
+  { month: "Apr", revenue: 61000, leads: 168, conversion: 15.8 },
+  { month: "May", revenue: 55000, leads: 156, conversion: 14.9 },
+  { month: "Jun", revenue: 67000, leads: 189, conversion: 16.4 },
+];
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const leadSourceData = [
+  { name: "Organic Search", value: 42, color: "#3B82F6" },
+  { name: "Social Media", value: 28, color: "#8B5CF6" },
+  { name: "Email Campaign", value: 18, color: "#10B981" },
+  { name: "Referral", value: 12, color: "#F59E0B" },
+];
 
-  // Mock data - in a real app, this would come from API calls
+const performanceData = [
+  { name: "Email Open Rate", value: 68, fill: "#3B82F6" },
+  { name: "Click Through Rate", value: 24, fill: "#8B5CF6" },
+  { name: "Conversion Rate", value: 15, fill: "#10B981" },
+  { name: "Bounce Rate", value: 32, fill: "#EF4444" },
+];
+
+const activityData = [
+  { time: "00:00", emails: 12, leads: 3, conversions: 1 },
+  { time: "04:00", emails: 8, leads: 2, conversions: 0 },
+  { time: "08:00", emails: 45, leads: 12, conversions: 3 },
+  { time: "12:00", emails: 67, leads: 18, conversions: 5 },
+  { time: "16:00", emails: 52, leads: 15, conversions: 4 },
+  { time: "20:00", emails: 38, leads: 9, conversions: 2 },
+];
+
+export default function Dashboard() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [user, setUser] = useState<{ email: string } | null>(null);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    // Simulate user check - in real app, this would be from Supabase
+    setUser({ email: "demo@clientlio.com" });
+  }, []);
+
   const mockData = {
-    emailSends: {
-      total: user ? 2547 : 1234,
-      change: user ? 12.5 : 8.3,
-      positive: true,
-    },
-    newLeads: {
-      total: user ? 384 : 156,
-      change: user ? 8.2 : 5.7,
-      positive: true,
-    },
-    conversionRate: {
-      total: user ? 15.3 : 12.8,
-      change: user ? -2.4 : 3.2,
-      positive: user ? false : true,
-    },
-    topLeadSources: [
-      { name: "Organic Search", percentage: 42 },
-      { name: "Social Media", percentage: 28 },
-      { name: "Referral", percentage: 18 },
-      { name: "Direct", percentage: 12 },
-    ],
+    totalRevenue: 328000,
+    revenueChange: 18.5,
+    totalLeads: 1247,
+    leadsChange: 12.3,
+    conversionRate: 15.2,
+    conversionChange: -2.1,
+    emailsSent: 8547,
+    emailsChange: 24.7,
   };
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
 
   return (
     <>
       <DashboardNavbar />
-      <main className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container mx-auto px-4 py-8 flex flex-col gap-8">
+      <main className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse delay-500"></div>
+        </div>
+
+        <div className="relative z-10 container mx-auto px-4 py-8 flex flex-col gap-8">
           {/* Header Section */}
-          <header className="flex flex-col gap-4">
-            <h1 className="text-3xl font-bold">
-              {user ? "Welcome to your Dashboard" : "Dashboard Preview"}
-            </h1>
-            <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-lg text-sm p-3 px-4 rounded-lg border border-white/20 dark:border-gray-700/30 shadow-sm flex gap-2 items-center">
-              <InfoIcon size="14" />
-              <span>
-                {user
-                  ? "Here's an overview of your AI services performance"
-                  : "This is a demo of what your dashboard could look like. Sign up to get started!"
-                }
+          <header className="flex flex-col gap-4 animate-fade-in">
+            <div className="flex items-center gap-3">
+              <Sparkles className="h-8 w-8 text-purple-400 animate-pulse" />
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
+                AI-Powered Dashboard
+              </h1>
+            </div>
+            <div className="bg-white/10 backdrop-blur-lg text-sm p-4 px-6 rounded-xl border border-white/20 shadow-2xl flex gap-3 items-center">
+              <InfoIcon size="16" className="text-purple-400" />
+              <span className="text-gray-200">
+                Real-time insights powered by advanced AI analytics and machine learning
               </span>
             </div>
-            {!user && (
-              <div className="bg-blue-600/20 dark:bg-blue-800/20 backdrop-blur-lg text-sm p-4 rounded-lg border border-blue-500/30 shadow-sm">
-                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                  <div>
-                    <p className="font-medium text-blue-900 dark:text-blue-100">
-                      Ready to get started with AI-powered business tools?
-                    </p>
-                    <p className="text-blue-700 dark:text-blue-200">
-                      Sign up now to access your personalized dashboard and start growing your business.
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    <a
-                      href="/sign-up"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Sign Up
-                    </a>
-                    <a
-                      href="/sign-in"
-                      className="px-4 py-2 bg-white/20 text-blue-900 dark:text-blue-100 rounded-lg hover:bg-white/30 transition-colors"
-                    >
-                      Sign In
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
           </header>
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Email Sends Card */}
-            <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg hover:shadow-xl transition-all duration-300">
+          {/* Key Metrics Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Revenue Card */}
+            <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur-lg border border-blue-500/30 shadow-2xl hover:shadow-blue-500/25 transition-all duration-500 hover:scale-105 group">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-lg font-medium">
-                    Email Sends
+                  <CardTitle className="text-lg font-medium text-white">
+                    Total Revenue
                   </CardTitle>
-                  <Mail className="h-5 w-5 text-blue-500" />
+                  <DollarSign className="h-6 w-6 text-blue-400 group-hover:scale-110 transition-transform" />
                 </div>
-                <CardDescription>Total emails sent this month</CardDescription>
+                <CardDescription className="text-blue-200">
+                  Monthly recurring revenue
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-end">
-                  <div className="text-3xl font-bold">
-                    {mockData.emailSends.total.toLocaleString()}
+                  <div className="text-3xl font-bold text-white">
+                    ${mockData.totalRevenue.toLocaleString()}
                   </div>
-                  <div
-                    className={`flex items-center ${mockData.emailSends.positive ? "text-green-500" : "text-red-500"}`}
-                  >
-                    {mockData.emailSends.positive ? (
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4 mr-1" />
-                    )}
+                  <div className="flex items-center text-green-400">
+                    <ArrowUpRight className="h-4 w-4 mr-1" />
                     <span className="text-sm font-medium">
-                      {mockData.emailSends.change}%
+                      {mockData.revenueChange}%
                     </span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* New Leads Card */}
-            <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg hover:shadow-xl transition-all duration-300">
+            {/* Leads Card */}
+            <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur-lg border border-purple-500/30 shadow-2xl hover:shadow-purple-500/25 transition-all duration-500 hover:scale-105 group">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-lg font-medium">
+                  <CardTitle className="text-lg font-medium text-white">
                     New Leads
                   </CardTitle>
-                  <Users className="h-5 w-5 text-indigo-500" />
+                  <Users className="h-6 w-6 text-purple-400 group-hover:scale-110 transition-transform" />
                 </div>
-                <CardDescription>
-                  New leads generated this month
+                <CardDescription className="text-purple-200">
+                  Generated this month
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-end">
-                  <div className="text-3xl font-bold">
-                    {mockData.newLeads.total}
+                  <div className="text-3xl font-bold text-white">
+                    {mockData.totalLeads}
                   </div>
-                  <div
-                    className={`flex items-center ${mockData.newLeads.positive ? "text-green-500" : "text-red-500"}`}
-                  >
-                    {mockData.newLeads.positive ? (
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4 mr-1" />
-                    )}
+                  <div className="flex items-center text-green-400">
+                    <ArrowUpRight className="h-4 w-4 mr-1" />
                     <span className="text-sm font-medium">
-                      {mockData.newLeads.change}%
+                      {mockData.leadsChange}%
                     </span>
                   </div>
                 </div>
@@ -169,31 +197,55 @@ export default async function Dashboard() {
             </Card>
 
             {/* Conversion Rate Card */}
-            <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur-lg border border-green-500/30 shadow-2xl hover:shadow-green-500/25 transition-all duration-500 hover:scale-105 group">
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-lg font-medium">
+                  <CardTitle className="text-lg font-medium text-white">
                     Conversion Rate
                   </CardTitle>
-                  <TrendingUp className="h-5 w-5 text-purple-500" />
+                  <Target className="h-6 w-6 text-green-400 group-hover:scale-110 transition-transform" />
                 </div>
-                <CardDescription>Average conversion percentage</CardDescription>
+                <CardDescription className="text-green-200">
+                  Lead to customer rate
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-end">
-                  <div className="text-3xl font-bold">
-                    {mockData.conversionRate.total}%
+                  <div className="text-3xl font-bold text-white">
+                    {mockData.conversionRate}%
                   </div>
-                  <div
-                    className={`flex items-center ${mockData.conversionRate.positive ? "text-green-500" : "text-red-500"}`}
-                  >
-                    {mockData.conversionRate.positive ? (
-                      <ArrowUpRight className="h-4 w-4 mr-1" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4 mr-1" />
-                    )}
+                  <div className="flex items-center text-red-400">
+                    <ArrowDownRight className="h-4 w-4 mr-1" />
                     <span className="text-sm font-medium">
-                      {mockData.conversionRate.change}%
+                      {Math.abs(mockData.conversionChange)}%
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Emails Sent Card */}
+            <Card className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur-lg border border-orange-500/30 shadow-2xl hover:shadow-orange-500/25 transition-all duration-500 hover:scale-105 group">
+              <CardHeader className="pb-2">
+                <div className="flex justify-between items-center">
+                  <CardTitle className="text-lg font-medium text-white">
+                    Emails Sent
+                  </CardTitle>
+                  <Mail className="h-6 w-6 text-orange-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <CardDescription className="text-orange-200">
+                  Campaign emails delivered
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex justify-between items-end">
+                  <div className="text-3xl font-bold text-white">
+                    {mockData.emailsSent.toLocaleString()}
+                  </div>
+                  <div className="flex items-center text-green-400">
+                    <ArrowUpRight className="h-4 w-4 mr-1" />
+                    <span className="text-sm font-medium">
+                      {mockData.emailsChange}%
                     </span>
                   </div>
                 </div>
@@ -201,145 +253,264 @@ export default async function Dashboard() {
             </Card>
           </div>
 
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Lead Sources Chart */}
-            <Card className="lg:col-span-2 bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg">
+          {/* Charts Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Revenue Trend Chart */}
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-white/10 transition-all duration-500">
               <CardHeader>
-                <CardTitle>Top Lead Sources</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-400" />
+                  Revenue & Leads Trend
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Monthly performance overview
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <ComposedChart data={revenueData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis dataKey="month" stroke="#9CA3AF" />
+                    <YAxis yAxisId="left" stroke="#9CA3AF" />
+                    <YAxis yAxisId="right" orientation="right" stroke="#9CA3AF" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(17, 24, 39, 0.9)",
+                        border: "1px solid rgba(75, 85, 99, 0.3)",
+                        borderRadius: "8px",
+                        color: "#F9FAFB",
+                      }}
+                    />
+                    <Legend />
+                    <Area
+                      yAxisId="left"
+                      type="monotone"
+                      dataKey="revenue"
+                      fill="url(#revenueGradient)"
+                      stroke="#3B82F6"
+                      strokeWidth={2}
+                    />
+                    <Bar yAxisId="right" dataKey="leads" fill="#8B5CF6" />
+                    <defs>
+                      <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1} />
+                      </linearGradient>
+                    </defs>
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Lead Sources Pie Chart */}
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-white/10 transition-all duration-500">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-purple-400" />
+                  Lead Sources Distribution
+                </CardTitle>
+                <CardDescription className="text-gray-300">
                   Where your leads are coming from
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {mockData.topLeadSources.map((source, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">
-                          {source.name}
-                        </span>
-                        <span className="text-sm text-muted-foreground">
-                          {source.percentage}%
-                        </span>
-                      </div>
-                      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full ${index === 0 ? "bg-blue-500" : index === 1 ? "bg-indigo-500" : index === 2 ? "bg-purple-500" : "bg-pink-500"}`}
-                          style={{ width: `${source.percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* User Profile Section */}
-            <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <UserCircle size={48} className="text-primary" />
-                  <div>
-                    <CardTitle>{user ? "User Profile" : "Demo Profile"}</CardTitle>
-                    <CardDescription>
-                      {user ? user.email : "demo@clientlio.com"}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                {user ? (
-                  <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4 overflow-hidden">
-                    <pre className="text-xs font-mono max-h-48 overflow-auto">
-                      {JSON.stringify(user, null, 2)}
-                    </pre>
-                  </div>
-                ) : (
-                  <div className="bg-white/50 dark:bg-gray-900/50 rounded-lg p-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                      This is a preview of your user profile section. When you sign up, you'll see:
-                    </p>
-                    <ul className="text-sm space-y-2">
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        Account information and settings
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        Subscription details and billing
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        API keys and integrations
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        Usage statistics and limits
-                      </li>
-                    </ul>
-                  </div>
-                )}
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={leadSourceData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={120}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {leadSourceData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(17, 24, 39, 0.9)",
+                        border: "1px solid rgba(75, 85, 99, 0.3)",
+                        borderRadius: "8px",
+                        color: "#F9FAFB",
+                      }}
+                    />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </div>
 
-          {/* Data Upload Section */}
-          <Card className="bg-white/40 dark:bg-gray-800/40 backdrop-blur-md border border-white/20 dark:border-gray-700/30 shadow-lg">
+          {/* Performance Metrics and Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Performance Radial Chart */}
+            <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-white/10 transition-all duration-500">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Activity className="h-5 w-5 text-green-400" />
+                  Performance Metrics
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Key performance indicators
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={250}>
+                  <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="90%" data={performanceData}>
+                    <RadialBar dataKey="value" cornerRadius={10} fill="#8884d8" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(17, 24, 39, 0.9)",
+                        border: "1px solid rgba(75, 85, 99, 0.3)",
+                        borderRadius: "8px",
+                        color: "#F9FAFB",
+                      }}
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* 24-Hour Activity */}
+            <Card className="lg:col-span-2 bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl hover:shadow-white/10 transition-all duration-500">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-orange-400" />
+                  24-Hour Activity
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Real-time activity throughout the day
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={250}>
+                  <AreaChart data={activityData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                    <XAxis dataKey="time" stroke="#9CA3AF" />
+                    <YAxis stroke="#9CA3AF" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(17, 24, 39, 0.9)",
+                        border: "1px solid rgba(75, 85, 99, 0.3)",
+                        borderRadius: "8px",
+                        color: "#F9FAFB",
+                      }}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="emails"
+                      stackId="1"
+                      stroke="#3B82F6"
+                      fill="#3B82F6"
+                      fillOpacity={0.6}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="leads"
+                      stackId="1"
+                      stroke="#8B5CF6"
+                      fill="#8B5CF6"
+                      fillOpacity={0.6}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="conversions"
+                      stackId="1"
+                      stroke="#10B981"
+                      fill="#10B981"
+                      fillOpacity={0.6}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* AI Insights Section */}
+          <Card className="bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-indigo-500/20 backdrop-blur-lg border border-purple-500/30 shadow-2xl">
             <CardHeader>
-              <CardTitle>
-                {user ? "Update Dashboard Data" : "Data Management Features"}
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="h-6 w-6 text-yellow-400 animate-pulse" />
+                AI-Powered Insights
               </CardTitle>
-              <CardDescription>
-                {user
-                  ? "Upload new data or connect to external APIs"
-                  : "See what data management features are available"
-                }
+              <CardDescription className="text-gray-300">
+                Machine learning recommendations for your business
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col md:flex-row gap-4">
-                {user ? (
-                  <>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                      <BarChart3 className="h-4 w-4" />
-                      <span>Connect API</span>
-                    </button>
-                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                      <Mail className="h-4 w-4" />
-                      <span>Upload Email Data</span>
-                    </button>
-                    <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md transition-colors flex items-center justify-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <span>Import Leads</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
-                      <BarChart3 className="h-4 w-4" />
-                      <span>Connect API</span>
-                    </div>
-                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
-                      <Mail className="h-4 w-4" />
-                      <span>Upload Email Data</span>
-                    </div>
-                    <div className="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-md flex items-center justify-center gap-2 cursor-not-allowed">
-                      <Users className="h-4 w-4" />
-                      <span>Import Leads</span>
-                    </div>
-                  </>
-                )}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+                  <h4 className="text-white font-semibold mb-2">📈 Growth Opportunity</h4>
+                  <p className="text-gray-300 text-sm">
+                    Your email open rates are 23% above industry average. Consider increasing campaign frequency by 15%.
+                  </p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+                  <h4 className="text-white font-semibold mb-2">🎯 Optimization Tip</h4>
+                  <p className="text-gray-300 text-sm">
+                    Social media leads have the highest conversion rate. Allocate 30% more budget to social campaigns.
+                  </p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4 border border-white/20">
+                  <h4 className="text-white font-semibold mb-2">⚡ Action Required</h4>
+                  <p className="text-gray-300 text-sm">
+                    Peak activity detected at 12:00-16:00. Schedule important campaigns during these hours for maximum impact.
+                  </p>
+                </div>
               </div>
-              {!user && (
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
-                  Sign up to unlock these powerful data management features and start integrating your business data.
-                </p>
-              )}
+            </CardContent>
+          </Card>
+
+          {/* Quick Actions */}
+          <Card className="bg-white/10 backdrop-blur-lg border border-white/20 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-white">Quick Actions</CardTitle>
+              <CardDescription className="text-gray-300">
+                Streamline your workflow with one-click actions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-4 py-3 rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
+                  <BarChart3 className="h-4 w-4" />
+                  <span className="text-sm font-medium">Generate Report</span>
+                </button>
+                <button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white px-4 py-3 rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
+                  <Mail className="h-4 w-4" />
+                  <span className="text-sm font-medium">Send Campaign</span>
+                </button>
+                <button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-4 py-3 rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
+                  <Users className="h-4 w-4" />
+                  <span className="text-sm font-medium">Import Leads</span>
+                </button>
+                <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 py-3 rounded-lg transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
+                  <Calendar className="h-4 w-4" />
+                  <span className="text-sm font-medium">Schedule Task</span>
+                </button>
+              </div>
             </CardContent>
           </Card>
         </div>
       </main>
+
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out;
+        }
+      `}</style>
     </>
   );
 }
